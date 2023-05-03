@@ -1,24 +1,10 @@
 import json
 import time
-import warnings
 from datetime import datetime
 import pandas as pd
 import requests
 import config
-from os.path import join
-from geojson import LineString, Feature, FeatureCollection, dump
 
-# from shapely.geometry import LineString
-import polyline
-
-warnings.filterwarnings("ignore")
-
-# Function to create a GeoJSON feature from a polyline and data
-def get_geojson(poly, data):
-
-    shape = LineString(polyline.decode(poly))
-
-    return Feature(geometry=shape, properties=data)
 
 # Function to get the toll rates from TollGuru API
 def get_tg_api_response(polyline, vehicle_type, departure_time):
@@ -43,9 +29,6 @@ def get_tg_api_response(polyline, vehicle_type, departure_time):
     cash = response["route"]["costs"].get("cash", "NA")
     _license = response["route"]["costs"].get("licensePlate", "NA")
     prepaid = response["route"]["costs"].get("prepaidCard", "NA")
-    # toll_id_list = []
-    # for id in response["route"]["tolls"]:
-    #     toll_id_list.append(id["id"])
 
     return tag, cash, tag_and_cash, _license, prepaid
 
@@ -105,9 +88,6 @@ def get_google_api_response(o_lat, o_long, d_lat, d_long, departure_time, toll_p
 def main():
     # Read input data from CSV file
     df = pd.read_csv(INPUT, encoding="utf-8-sig")
-    json_features = []
-
-    # df = df.iloc[:1, :]
     output_df = pd.DataFrame()
 
     for idx, row in df.iterrows():
@@ -176,19 +156,14 @@ def main():
             "tg_license": tg_license,
             "tg_prepaid": tg_prepaid,
         }
-        json_features.append(get_geojson(google_poly1, _dict))
 
         output_df = output_df.append(pd.DataFrame([_dict]), ignore_index=True)
         time.sleep(1)
-
-    #with open(OUTPUT.split(".")[0] + ".geojson", "w") as f:
-    #    dump(json_features, f)
 
     output_df.to_csv(OUTPUT, encoding="utf-8-sig", index=False)
 
 
 if __name__ == "__main__":
-    FILE = "india_test_cases_Chandigarh.csv"
-    INPUT = join("input_test_cases", FILE)
-    OUTPUT = join("output_test_cases", FILE)
+    INPUT = "sample-input.csv"
+    OUTPUT = "sample-output.csv"
     main()
