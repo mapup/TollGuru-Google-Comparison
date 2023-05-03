@@ -27,12 +27,12 @@ Once you have your API keys, you will need to create a config.py file in the sam
 To use the script, you will need to create a CSV file containing the input data. The CSV file should have the following columns:
 
 - **id**: Unique identifier for the route
-- **from_lat**: Latitude of the origin
-- **from_long**: Longitude of the origin
-- **to_lat**: Latitude of the destination
-- **to_long**: Longitude of the destination
-- **vehicle_tollguru**: Vehicle type for TollGuru API (e.g. "2AxlesAuto")
-- **toll_pass**: Toll pass information (e.g. "IN_FASTAG")
+- **origin_latitude**: Latitude of the origin
+- **origin_longitude**: Longitude of the origin
+- **destination_latitude**: Latitude of the destination
+- **destination_longitude**: Longitude of the destination
+- **tollguru_vehicle**: Vehicle type for TollGuru API (e.g. "2AxlesAuto")
+- **google_toll_pass**: Toll pass information (e.g. "IN_FASTAG")
 
 
 Once you have created the CSV file, you can run the script by running the following command:
