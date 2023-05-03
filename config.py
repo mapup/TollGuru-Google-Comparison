@@ -1,2 +1,2 @@
-GOOGLE_API_KEY = "Your Google ROUTE API KEY"
-TG_API_KEY = "YOUR TOLLGURU API KEY"
+TOLLGURU_API_KEY = "Your TollGuru API key"
+GOOGLE_API_KEY = "Your Google route API key"

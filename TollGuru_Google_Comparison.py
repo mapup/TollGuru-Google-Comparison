@@ -1,40 +1,49 @@
 import json
 import time
-from datetime import datetime
+
 import pandas as pd
 import requests
+
 import config
 
 
 # Function to get the toll rates from TollGuru API
-def get_tg_api_response(polyline, vehicle_type, departure_time):
+def get_tg_api_response(polyline, vehicle_type):
     url = "https://apis.tollguru.com/toll/v2/complete-polyline-from-mapping-service"
 
     payload = json.dumps(
         {
             "vehicleType": vehicle_type,
             "source": "google",
-            "departure_time": departure_time,
             "polyline": polyline,
         }
     )
-    headers = {"Content-Type": "application/json", "x-api-key": f"{config.TG_API_KEY}"}
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": f"{config.TOLLGURU_API_KEY}",
+    }
 
     response = requests.request(
         "POST", url, headers=headers, data=payload, timeout=10
     ).json()
 
-    tag_and_cash = response["route"]["costs"].get("tagAndCash", "NA")
-    tag = response["route"]["costs"].get("tag", "NA")
-    cash = response["route"]["costs"].get("cash", "NA")
-    _license = response["route"]["costs"].get("licensePlate", "NA")
-    prepaid = response["route"]["costs"].get("prepaidCard", "NA")
+    tollguru_transponder_cash = response["route"]["costs"].get("tagAndCash", "NA")
+    tollguru_transponder = response["route"]["costs"].get("tag", "NA")
+    tollguru_cash = response["route"]["costs"].get("cash", "NA")
+    tollguru_license_plate = response["route"]["costs"].get("licensePlate", "NA")
+    tollguru_prepaid = response["route"]["costs"].get("prepaidCard", "NA")
 
-    return tag, cash, tag_and_cash, _license, prepaid
+    return (
+        tollguru_transponder,
+        tollguru_cash,
+        tollguru_transponder_cash,
+        tollguru_license_plate,
+        tollguru_prepaid,
+    )
 
 
 # Function to get the route information from Google Maps API
-def get_google_api_response(o_lat, o_long, d_lat, d_long, departure_time, toll_pass):
+def get_google_api_response(o_lat, o_long, d_lat, d_long, google_toll_pass):
     url = "https://routes.googleapis.com/directions/v2:computeRoutes"
 
     payload = json.dumps(
@@ -46,14 +55,12 @@ def get_google_api_response(o_lat, o_long, d_lat, d_long, departure_time, toll_p
                 "location": {"latLng": {"latitude": d_lat, "longitude": d_long}}
             },
             "travelMode": "DRIVE",
-            "routingPreference": "TRAFFIC_AWARE",
             "polylineQuality": "HIGH_QUALITY",
-            "departureTime": departure_time,
             "computeAlternativeRoutes": False,
             "extraComputations": ["TOLLS"],
             "routeModifiers": {
                 "vehicleInfo": {"emissionType": "GASOLINE"},
-                "tollPasses": [toll_pass],
+                "tollPasses": [google_toll_pass],
                 "avoidTolls": False,
             },
         }
@@ -94,67 +101,48 @@ def main():
         print(f"Working on case: {idx+1} of {len(df)}")
 
         # Get route information from Google Maps API
-        google_poly1, google_currency, google_cash_cost = get_google_api_response(
-            o_lat=row.from_lat,
-            o_long=row.from_long,
-            d_lat=row.to_lat,
-            d_long=row.to_long,
-            departure_time=datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-            toll_pass=-1,
+        google_poly, google_currency, google_cash_cost = get_google_api_response(
+            o_lat=row.origin_latitude,
+            o_long=row.origin_longitude,
+            d_lat=row.destination_latitude,
+            d_long=row.destination_longitude,
+            google_toll_pass=-1,
         )
-        google_poly2, google_currency, google_tag_cost = get_google_api_response(
-            o_lat=row.from_lat,
-            o_long=row.from_long,
-            d_lat=row.to_lat,
-            d_long=row.to_long,
-            departure_time=datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-            toll_pass=row.toll_pass,
+        google_poly, google_currency, google_tag_cost = get_google_api_response(
+            o_lat=row.origin_latitude,
+            o_long=row.origin_longitude,
+            d_lat=row.destination_latitude,
+            d_long=row.destination_longitude,
+            google_toll_pass=row.google_google_toll_pass,
         )
 
-        if google_poly1 != "NA":
-            (
-                tg_tag,
-                tg_cash,
-                tg_tagAndCash,
-                tg_license,
-                tg_prepaid,
-            ) = get_tg_api_response(
-                polyline=google_poly1,
-                vehicle_type=row.vehicle_tollguru,
-                departure_time=datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-            )
-        elif google_poly2 != "NA":
-            (
-                tg_tag,
-                tg_cash,
-                tg_tagAndCash,
-                tg_license,
-                tg_prepaid,
-            ) = get_tg_api_response(
-                polyline=google_poly2,
-                vehicle_type=row.vehicle_tollguru,
-                departure_time=datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-            )
-        else:
-            print(f"Skipping ID: {row.id}")
-            continue
+        (
+            tollguru_transponder,
+            tollguru_cash,
+            tollguru_transponder_cash,
+            tollguru_license_plate,
+            tollguru_prepaid,
+        ) = get_tg_api_response(
+            polyline=google_poly,
+            vehicle_type=row.tollguru_vehicle,
+        )
 
         _dict = {
             "id": row.id,
-            "from_lat": row.from_lat,
-            "from_long": row.from_long,
-            "to_lat": row.to_lat,
-            "to_long": row.to_long,
-            "vehicle_tollguru": row.vehicle_tollguru,
-            "toll_pass": row.toll_pass,
+            "origin_latitude": row.origin_latitude,
+            "origin_longitude": row.origin_longitude,
+            "destination_latitude": row.destination_latitude,
+            "destination_longitude": row.destination_longitude,
+            "tollguru_vehicle": row.tollguru_vehicle,
+            "google_toll_pass": row.google_toll_pass,
             "google_currency": google_currency,
             "google_tag_cost": google_tag_cost,
             "google_cash_cost": google_cash_cost,
-            "tg_tag": tg_tag,
-            "tg_cash": tg_cash,
-            "tg_tagAndCash": tg_tagAndCash,
-            "tg_license": tg_license,
-            "tg_prepaid": tg_prepaid,
+            "tollguru_transponder": tollguru_transponder,
+            "tollguru_cash": tollguru_cash,
+            "tollguru_transponder_cash": tollguru_transponder_cash,
+            "tollguru_license_plate": tollguru_license_plate,
+            "tollguru_prepaid": tollguru_prepaid,
         }
 
         output_df = output_df.append(pd.DataFrame([_dict]), ignore_index=True)
