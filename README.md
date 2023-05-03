@@ -1,4 +1,4 @@
-# Google-tg-comparison
+# TollGuru-Google-comparison
 This is a Python script that calculates toll rates for a given route using the Google Maps API and TollGuru API. The script takes input data from a CSV file containing origin and destination coordinates, vehicle type, and toll pass information. It then uses the Google Maps API to get the route information and TollGuru API to get the toll rates for the route.
 
 The output is a CSV file containing the input data and the toll rates for the route. Additionally, a GeoJSON file is created containing the route polyline and toll information.
