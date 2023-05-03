@@ -36,6 +36,6 @@ To use the script, you will need to create a CSV file containing the input data.
 
 
 Once you have created the CSV file, you can run the script by running the following command:
-> python **google_tg_comparison.py**
+> python **TollGuru_Google_Comparison.py**
 
 The script will read the input data from the CSV file, calculate the toll rates using the Google Maps API and TollGuru API, and write the output to a CSV file and a GeoJSON file.
