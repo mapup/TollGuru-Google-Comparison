@@ -1,13 +1,13 @@
 id,country,case_description,origin_latitude,origin_longitude,destination_latitude,destination_longitude,tollguru_vehicle,google_toll_pass,google_currency,google_transponder,google_cash,tollguru_currency,tollguru_transponder,tollguru_cash,tollguru_transponder_cash,tollguru_license_plate,tollguru_prepaid
 1,India,Example 1 | India: NH-44 toll is missing in Google Maps,28.61393,77.20902,30.73331,76.77941,2AxlesAuto,IN_FASTAG,INR,NA,NA,INR,325,650,325,NA,NA
 2,India,Example 2 | India: Delhi-Meerut Expressway toll is missing in Google Maps,28.98446,77.70641,28.61393,77.20902,2AxlesAuto,IN_FASTAG,INR,NA,NA,INR,155,310,155,NA,NA
-3,India,Example 1 | India: Tolls between major cities is missing in Google,19.07598,72.87765,17.38504,78.48667,2AxlesAuto,IN_FASTAG,INR,NA,NA,INR,NA,2144,1092,NA,NA
+3,India,Example 3 | India: Tolls between major cities is missing in Google,19.07598,72.87765,17.38504,78.48667,2AxlesAuto,IN_FASTAG,INR,NA,NA,INR,NA,2144,1092,NA,NA
 4,Australia,Example 4 | Australia: Google does not provide toll in major cities,-27.610269,153.0622,-27.396929,153.1069,2AxlesAuto,AU_LINKT,AUD,NA,NA,AUD,8.06,NA,NA,9.14,9.14
 5,Australia,Example 5 | Australia: Google does not provide toll in major cities,-27.4477,153.03661,-27.39786,153.109354,2AxlesAuto,AU_LINKT,AUD,NA,NA,AUD,6.38,NA,NA,6.92,6.92
 6,Australia,Example 6 | Australia: Google does not provide toll in major cities,-33.76623,150.99718,-33.67855,151.11784,2AxlesAuto,AU_LINKT,AUD,NA,NA,AUD,13.84,NA,NA,14.94,15.34
 7,India,Example 1 | India: Google shows outdated toll information,22.72808,75.80422,23.0225,72.57136,2AxlesAuto,IN_FASTAG,INR,710,1420,INR,720,1440,720,NA,NA
 8,Australia,Example 2 | Australia: Google misleads license plate tolls with cash tolls,-27.600639,152.87528,-27.664039,153.14264,2AxlesAuto,AU_LINKT,AUD,5.08,6.1,AUD,5.08,NA,NA,6.16,6.16
-9,India,Example 1 | India : Google doesnâ€™t provide taxi tolls,28.69137,76.9314,28.60901,76.98545,2AxlesTaxi,IN_FASTAG,INR,NA,NA,INR,NA,100,100,NA,NA
-10,Australia,Example 2 | Australia : Google doesnâ€™t provide taxi tolls,-37.8157,145.22751,-38.14118,145.12176,2AxlesTaxi,AU_LINKT,AUD,6.75,7.07,AUD,2.93,NA,NA,3.25,3.25
-11,USA,Example 3 | USA: Google doesnâ€™t show rideshare tolls,42.34823,-71.08851,42.29845,-73.27461,2AxlesTNCPool,US_MA_EZPASSMA,USD,5.95,11.5,USD,7.6,NA,NA,11.5,7.6
-12,USA,Example 4 | USA: Google doesnâ€™t show occupancy based tolls,37.83253,-122.48178,37.80102,-122.47122,Carpool2,US_CA_FASTRAK,USD,8.4,8.8,USD,6.4,NA,NA,9.4,6.4
+9,India,Example 3 | India : Google doesn’t provide taxi tolls,28.69137,76.9314,28.60901,76.98545,2AxlesTaxi,IN_FASTAG,INR,NA,NA,INR,NA,100,100,NA,NA
+10,Australia,Example 4 | Australia : Google doesn’t provide taxi tolls,-37.8157,145.22751,-38.14118,145.12176,2AxlesTaxi,AU_LINKT,AUD,6.75,7.07,AUD,2.93,NA,NA,3.25,3.25
+11,USA,Example 5 | USA: Google doesn’t show rideshare tolls,42.34823,-71.08851,42.29845,-73.27461,2AxlesTNCPool,US_MA_EZPASSMA,USD,5.95,11.5,USD,7.6,NA,NA,11.5,7.6
+12,USA,Example 6 | USA: Google doesn’t show occupancy based tolls,37.83253,-122.48178,37.80102,-122.47122,Carpool2,US_CA_FASTRAK,USD,8.4,8.8,USD,6.4,NA,NA,9.4,6.4
