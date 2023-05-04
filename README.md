@@ -11,16 +11,6 @@ Once you have your API keys, you will need to create a config.py file in the sam
 
 > GOOGLE_API_KEY = "Your Google route API key"
 
-### Requirements
-
-> requests==2.26.0
-
-> pandas==1.3.3
-
-> geojson==2.5.0
-
-> polyline==1.4.0
-
 
 
 ### Usage
